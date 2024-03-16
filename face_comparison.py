@@ -2,7 +2,7 @@ from deepface import DeepFace
 from file_operations import get_sorted_files, get_image_paths
 from plot_view import plot_verification_results
 
-def compare_faces(real_data_path, gen_data_path):
+def compare_faces_deepface(real_data_path, gen_data_path):
     real_data_files = get_sorted_files(real_data_path)
     gen_data_files = get_sorted_files(gen_data_path)
 
@@ -32,14 +32,15 @@ def compare_faces(real_data_path, gen_data_path):
 def print_verification_statistics(verification_results):
     success_count = verification_results.count(True)
     failure_count = verification_results.count(False)
+    total_pairs = len(verification_results)
 
     print("\nVerification Statistics:")
-    print(f"Total Pairs: {len(verification_results)}")
+    print(f"Total Pairs: {total_pairs}")
     print(f"Successful Verifications: {success_count}")
     print(f"Failed Verifications: {failure_count}")
 
-    if len(verification_results) > 0:
-        success_rate = success_count / len(verification_results) * 100
+    if total_pairs > 0:
+        success_rate = (success_count / total_pairs) * 100
         print(f"Success Rate: {success_rate:.2f}%")
     else:
         print("No pairs to verify.")

@@ -2,12 +2,25 @@ import matplotlib.pyplot as plt
 
 # Main function to plot the verification results
 def plot_verification_results(verification_results, distances, distance_threshold):
+    """
+    Plots verification results including a pie chart for success/failure distribution
+    and a scatter plot for face distances with a distance threshold line.
+
+    Args:
+        param verification_results (boolean): List of boolean values indicating verification success or failure
+
+        param distances (int): List of distances between face pairs
+
+        param distance_threshold (int): Threshold for face distance
+    """
     plt.figure(figsize=(10, 5))
 
+    # Plot pie chart for verification results
     plt.subplot(1, 2, 1)
     plot_pie_chart(verification_results)
     plt.title('Verification Results')
 
+    # Plot scatter plot for face distances
     plt.subplot(1, 2, 2)
     plot_distance_scatter(distances, distance_threshold)
     plt.title('Face Distance for Each Pair')
@@ -30,3 +43,4 @@ def plot_pie_chart(verification_results):
 def plot_distance_scatter(distances, distance_threshold):
     plt.scatter(range(1, len(distances)+1), distances, color='blue')
     plt.axhline(y=distance_threshold, color='r', linestyle='--', label=f'Threshold ({distance_threshold})')
+    plt.legend()
