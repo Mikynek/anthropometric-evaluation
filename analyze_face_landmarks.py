@@ -1,4 +1,4 @@
-from face_comparison import compare_faces_deepface
+from face_comparison_deepface import compare_faces_deepface
 
 # Example usage
 real_data_path = 'real-data'
