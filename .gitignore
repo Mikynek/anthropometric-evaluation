@@ -1,5 +1,9 @@
 .DS_Store
-helpers
+legacy
+CelebA-HQ-img
+test-data
+real-data
+gen-data
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
