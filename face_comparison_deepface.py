@@ -2,7 +2,7 @@ from deepface import DeepFace
 from file_operations import get_sorted_files, get_image_paths
 from plot_view import plot_verification_results
 
-def compare_faces_deepface(real_data_path, gen_data_path):
+def compare_faces_deepface(real_data_path, gen_data_path, save_locally=False):
     real_data_files = get_sorted_files(real_data_path)
     gen_data_files = get_sorted_files(gen_data_path)
 
@@ -28,7 +28,7 @@ def compare_faces_deepface(real_data_path, gen_data_path):
 
         print(f"Comparison between {real_file} and {gen_file}: {result['verified']} with distance {result['distance']}")
 
-    plot_verification_results(verification_results, distances, distance_threshold)
+    plot_verification_results(verification_results, distances, distance_threshold, save_locally)
     print_verification_statistics(verification_results)
 
 def print_verification_statistics(verification_results):
