@@ -20,7 +20,6 @@ def create_subplot_grid(images):
 
     fig, axarr = plt.subplots(num_rows, num_cols, figsize=(num_cols * 5, num_rows * 5))
 
-    # Flatten the axarr if it's not already flat (for handling single row case)
     if not isinstance(axarr, (list, np.ndarray)):
         axarr = [axarr]
 
@@ -39,14 +38,7 @@ def save_subplot_grid(fig, output_path):
     fig.savefig(output_path)
     plt.close(fig)
 
-def main():
-    parser = argparse.ArgumentParser(description='Create a grid of images from a folder.')
-    parser.add_argument('-s', '--source', required=True, help='Source directory path')
-    args = parser.parse_args()
-
-    source_folder = args.source
-    output_path = "subset-grid.png"
-
+def create_grid_image(source_folder, output_path):
     images = load_images(source_folder)
     if images:
         subplot_grid = create_subplot_grid(images)
@@ -54,6 +46,16 @@ def main():
         print(f"Subset grid saved to {output_path}")
     else:
         print("No images found in the specified directory.")
+
+def parse_arguments_grid_image():
+    parser = argparse.ArgumentParser(description='Create a grid of images from a folder.')
+    parser.add_argument('-s', '--source', required=True, help='Source directory path')
+    args = parser.parse_args()
+
+    source_folder = args.source
+    output_path = "subset-grid.png"
+
+    create_grid_image(source_folder, output_path)
 
 if __name__ == "__main__":
     main()

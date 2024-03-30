@@ -39,7 +39,7 @@ def copy_random_images(source, destination_dir, num_images):
     if source.endswith('.zip'):
         shutil.rmtree(temp_dir)
 
-def main():
+def parse_arguments_create_subset():
     parser = argparse.ArgumentParser(description='Copy random images from a source directory or zip file to a destination directory.')
     parser.add_argument('-s', '--source', required=True, help='Source directory or zip file path')
     parser.add_argument('-d', '--destination', required=True, help='Destination directory path')
@@ -49,4 +49,4 @@ def main():
     copy_random_images(args.source, args.destination, args.num)
 
 if __name__ == "__main__":
-    main()
+    parse_arguments()
