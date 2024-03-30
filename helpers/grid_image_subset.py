@@ -6,13 +6,20 @@ import matplotlib.image as mpimg
 import numpy as np
 
 def load_images(folder_path):
-    images = []
-    for filename in os.listdir(folder_path):
-        if filename.lower().endswith(('.jpg', '.png', '.jpeg')):
-            filepath = os.path.join(folder_path, filename)
-            images.append(mpimg.imread(filepath))
-    return images
-
+    try:
+        if not os.path.isdir(folder_path):
+            raise FileNotFoundError(f"The directory '{folder_path}' does not exist.")
+        
+        images = []
+        for filename in os.listdir(folder_path):
+            if filename.lower().endswith(('.jpg', '.png', '.jpeg')):
+                filepath = os.path.join(folder_path, filename)
+                images.append(mpimg.imread(filepath))
+        return images
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
+    
 def create_subplot_grid(images):
     num_images = len(images)
     num_cols = math.floor(math.sqrt(num_images))
@@ -44,7 +51,7 @@ def create_grid_image(source_folder, output_path):
         subplot_grid = create_subplot_grid(images)
         save_subplot_grid(subplot_grid, output_path)
         print(f"Subset grid saved to {output_path}")
-    else:
+    elif images is not None:
         print("No images found in the specified directory.")
 
 def parse_arguments_grid_image():
@@ -58,4 +65,4 @@ def parse_arguments_grid_image():
     create_grid_image(source_folder, output_path)
 
 if __name__ == "__main__":
-    main()
+    parse_arguments_grid_image()

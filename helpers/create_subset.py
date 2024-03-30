@@ -49,4 +49,4 @@ def parse_arguments_create_subset():
     copy_random_images(args.source, args.destination, args.num)
 
 if __name__ == "__main__":
-    parse_arguments()
+    parse_arguments_create_subset()
