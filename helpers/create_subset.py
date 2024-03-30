@@ -1,8 +1,23 @@
 import os
 import shutil
 import random
+import argparse
+import zipfile
+import tempfile
 
-def copy_random_images(source_dir, destination_dir, num_images=80):
+def extract_zip_to_temp(source_zip):
+    temp_dir = tempfile.mkdtemp()
+    with zipfile.ZipFile(source_zip, 'r') as zip_ref:
+        zip_ref.extractall(temp_dir)
+    return temp_dir
+
+def copy_random_images(source, destination_dir, num_images):
+    if source.endswith('.zip'):
+        temp_dir = extract_zip_to_temp(source)
+        source_dir = temp_dir
+    else:
+        source_dir = source
+
     # Get a list of all files in the source directory
     all_images = os.listdir(source_dir)
     
@@ -20,12 +35,18 @@ def copy_random_images(source_dir, destination_dir, num_images=80):
         shutil.copy2(source_path, destination_path)
         print(f"Copied {image} to {destination_path}")
 
+    # Clean up the temporary directory if created
+    if source.endswith('.zip'):
+        shutil.rmtree(temp_dir)
+
+def main():
+    parser = argparse.ArgumentParser(description='Copy random images from a source directory or zip file to a destination directory.')
+    parser.add_argument('-s', '--source', required=True, help='Source directory or zip file path')
+    parser.add_argument('-d', '--destination', required=True, help='Destination directory path')
+    parser.add_argument('-n', '--num', type=int, default=75, help='Number of random images to copy (default: 75)')
+    args = parser.parse_args()
+
+    copy_random_images(args.source, args.destination, args.num)
+
 if __name__ == "__main__":
-    # Replace these paths with your actual directory paths
-    source_directory = "/Users/jakubmikysek/Documents/FIT_VUT/BP/anthropometric-evaluation/CelebA-HQ-img"
-    destination_directory = "/Users/jakubmikysek/Documents/FIT_VUT/BP/anthropometric-evaluation/real-data"
-
-    # Specify the number of random images to copy (default is 80)
-    num_random_images = 15
-
-    copy_random_images(source_directory, destination_directory, num_random_images)
+    main()
