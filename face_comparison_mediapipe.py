@@ -2,7 +2,7 @@ import mediapipe as mp
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 
-from file_operations import get_sorted_files, get_image_paths
+from helpers.file_operations import get_sorted_files, get_image_paths
 
 def compare_landmarks(landmarks1, landmarks2):
     pass
