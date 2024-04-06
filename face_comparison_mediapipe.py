@@ -3,8 +3,9 @@ import mediapipe as mp
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 
+from experiments_statistics import print_analysis_statistics
 from helpers.file_operations import get_sorted_files, get_image_paths
-from helpers.landmark_info import FACE_PROPORTIONS
+from helpers.landmark_info import FACE_PROPORTIONS, MaxDifference
 
 def max_absolute_proportion_difference(proportions):
     max_value = 0
@@ -51,7 +52,6 @@ def compare_faces_mediapipe(real_data_path, gen_data_path):
     gen_data_files = get_sorted_files(gen_data_path)
 
     max_differences = {}
-    difference_sums = {}
 
     # Ensure both folders have an equal number of images
     if len(real_data_files) != len(gen_data_files):
@@ -78,25 +78,12 @@ def compare_faces_mediapipe(real_data_path, gen_data_path):
 
         # Counting which proportion differs the most
         if max_key in max_differences:
-            max_differences[max_key] += 1
-            difference_sums[max_key] += max_value
+            max_differences[max_key].count += 1
+            max_differences[max_key].value += max_value
         else:
-            max_differences[max_key] = 1
-            difference_sums[max_key] = max_value
+            max_differences[max_key] = MaxDifference(value=max_value, count=1)
 
-    print_analysis_statistics(max_differences, difference_sums)
-
-def print_analysis_statistics(max_differences, difference_sums):
-    print("SUMMARY")
-    print(f"Max differences: {max_differences}")
-
-    # Finding which proportion differs the most
-    most_differing_proportion = max(max_differences, key=max_differences.get)
-    print(f"The most differing proportion: {most_differing_proportion} with {max_differences[most_differing_proportion]} occurrences.")
-
-    # Calculate the average distance difference for the most differing proportion
-    average_distance_difference = difference_sums[most_differing_proportion] / max_differences[most_differing_proportion]
-    print(f"Average distance difference for the most differing proportion: {average_distance_difference}")
+    print_analysis_statistics(max_differences)
 
 if __name__ == "__main__":
     real_data_path = "real-data"

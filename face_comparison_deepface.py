@@ -1,6 +1,7 @@
 from deepface import DeepFace
 from helpers.file_operations import get_sorted_files, get_image_paths
 from plot_view import plot_verification_results
+from experiments_statistics import print_verification_statistics_deepface
 
 def compare_faces_deepface(real_data_path, gen_data_path, save_locally=False):
     real_data_files = get_sorted_files(real_data_path)
@@ -29,22 +30,4 @@ def compare_faces_deepface(real_data_path, gen_data_path, save_locally=False):
         print(f"Comparison between {real_file} and {gen_file}: {result['verified']} with distance {result['distance']}")
 
     plot_verification_results(verification_results, distances, distance_threshold, save_locally)
-    print_verification_statistics(verification_results, distances)
-
-def print_verification_statistics(verification_results, distances):
-    success_count = verification_results.count(True)
-    failure_count = verification_results.count(False)
-    total_pairs = len(verification_results)
-    average_distance = sum(distances) / len(distances)
-
-    print("\nVerification Statistics:")
-    print(f"Total Pairs: {total_pairs}")
-    print(f"Successful Verifications: {success_count}")
-    print(f"Failed Verifications: {failure_count}")
-    print(f"Average Distance: {average_distance:.6f}")
-
-    if total_pairs > 0:
-        success_rate = (success_count / total_pairs) * 100
-        print(f"Success Rate: {success_rate:.2f}%")
-    else:
-        print("No pairs to verify.")
+    print_verification_statistics_deepface(verification_results, distances)

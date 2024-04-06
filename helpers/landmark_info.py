@@ -52,7 +52,7 @@ FACE_PROPORTIONS: List[LandmarkMeasurements] = [
     LandmarkMeasurements(EN_L, GN, "special_face_height_left"),
     LandmarkMeasurements(EN_R, GN, "special_face_height_right"),
     LandmarkMeasurements(G, SN, "special_upper_face_height"),
-    LandmarkMeasurements(EX_L, EN_L, "outer_eye_width"),
+    LandmarkMeasurements(EX_L, EX_R, "outer_eye_width"),
     LandmarkMeasurements(EN_L, EN_R, "inner_eye_width"),
     LandmarkMeasurements(EX_L, EN_L, "left_eye_width"),
     LandmarkMeasurements(EX_R, EN_R, "right_eye_width"),
@@ -62,3 +62,8 @@ FACE_PROPORTIONS: List[LandmarkMeasurements] = [
     LandmarkMeasurements(LS, STO_LS, "upper_lip_height"),
     LandmarkMeasurements(STO_LI, LI,"lower_lip_height"),
 ]
+
+@dataclass
+class MaxDifference:
+    value: float
+    count: int
