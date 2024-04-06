@@ -6,7 +6,7 @@ from mediapipe.tasks.python import vision
 from helpers.file_operations import get_sorted_files, get_image_paths
 from helpers.landmark_info import FACE_PROPORTIONS
 
-def max_absolute_proportion(proportions):
+def max_absolute_proportion_difference(proportions):
     max_value = 0
     max_key = None
     for key, value in proportions.items():
@@ -50,6 +50,9 @@ def compare_faces_mediapipe(real_data_path, gen_data_path):
     real_data_files = get_sorted_files(real_data_path)
     gen_data_files = get_sorted_files(gen_data_path)
 
+    max_differences = {}
+    difference_sums = {}
+
     # Ensure both folders have an equal number of images
     if len(real_data_files) != len(gen_data_files):
         raise ValueError("Number of images in 'real-data' and 'gen-data' folders must be the same.")
@@ -69,16 +72,31 @@ def compare_faces_mediapipe(real_data_path, gen_data_path):
 
         print(f"Comparison between {real_file} and {gen_file}")
 
-        print(f"Real proportions: {real_proportions}")
-        print(f"Gen proportions: {gen_proportions}")
-
         comparison_result = compare_proportions(real_proportions, gen_proportions)
-        print()
-        print(f"Comparison result: {comparison_result}")
 
-        max_key, max_value = max_absolute_proportion(comparison_result)
-        print(f"Max difference: {max_key} with value {max_value}")
-        print("--------------------------------------------------------------------------------")
+        max_key, max_value = max_absolute_proportion_difference(comparison_result)
+
+        # Counting which proportion differs the most
+        if max_key in max_differences:
+            max_differences[max_key] += 1
+            difference_sums[max_key] += max_value
+        else:
+            max_differences[max_key] = 1
+            difference_sums[max_key] = max_value
+
+    print_analysis_statistics(max_differences, difference_sums)
+
+def print_analysis_statistics(max_differences, difference_sums):
+    print("SUMMARY")
+    print(f"Max differences: {max_differences}")
+
+    # Finding which proportion differs the most
+    most_differing_proportion = max(max_differences, key=max_differences.get)
+    print(f"The most differing proportion: {most_differing_proportion} with {max_differences[most_differing_proportion]} occurrences.")
+
+    # Calculate the average distance difference for the most differing proportion
+    average_distance_difference = difference_sums[most_differing_proportion] / max_differences[most_differing_proportion]
+    print(f"Average distance difference for the most differing proportion: {average_distance_difference}")
 
 if __name__ == "__main__":
     real_data_path = "real-data"
