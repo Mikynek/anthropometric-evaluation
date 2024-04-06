@@ -4,9 +4,32 @@ from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 
 from helpers.file_operations import get_sorted_files, get_image_paths
+from helpers.landmark_info import FACE_PROPORTIONS
 
-def compare_landmarks(landmarks1, landmarks2):
-    pass
+def max_absolute_proportion(proportions):
+    max_value = 0
+    max_key = None
+    for key, value in proportions.items():
+        if abs(value) > max_value:
+            max_value = abs(value)
+            max_key = key
+
+    return max_key, max_value
+
+def compare_proportions(proportions1, proportions2):
+    results = {}
+    for key in proportions1:
+        results[key] = proportions1[key] - proportions2[key]
+
+    return results
+
+def measure_face_proportions(landmarks):
+    distances = {}
+    for landmark in FACE_PROPORTIONS:
+        distance = calculate_distances(landmarks[landmark.start], landmarks[landmark.end])
+        distances[landmark.name] = distance
+
+    return distances
 
 def calculate_distances(landmark1, landmark2):
     # Calculate the Euclidean distance between two 3D points
@@ -35,28 +58,27 @@ def compare_faces_mediapipe(real_data_path, gen_data_path):
         real_image_path = get_image_paths(real_data_path, real_file)
         image_real = mp.Image.create_from_file(real_image_path)
         detection_result_real = detector.detect(image_real)
+        real_landmarks = detection_result_real.face_landmarks[0]
+        real_proportions = measure_face_proportions(real_landmarks)
 
         gen_image_path = get_image_paths(gen_data_path, gen_file)
         image_gen = mp.Image.create_from_file(gen_image_path)
         detection_result_gen = detector.detect(image_gen)
+        gen_landmarks = detection_result_gen.face_landmarks[0]
+        gen_proportions = measure_face_proportions(gen_landmarks)
 
         print(f"Comparison between {real_file} and {gen_file}")
-        real_landmarks = detection_result_real.face_landmarks[0]
-        gen_landmarks = detection_result_gen.face_landmarks[0]
 
-        print("Real landmarks sn:", real_landmarks[2].x, real_landmarks[2].y, real_landmarks[2].z)
-        print("Real landmarks n:", real_landmarks[8].x, real_landmarks[8].y, real_landmarks[8].z)
-        print("Gen landmarks sn:", gen_landmarks[2].x, gen_landmarks[2].y, gen_landmarks[2].z)
-        print("Gen landmarks n:", gen_landmarks[8].x, gen_landmarks[8].y, gen_landmarks[8].z)
+        print(f"Real proportions: {real_proportions}")
+        print(f"Gen proportions: {gen_proportions}")
 
-        real_distance = calculate_distances(real_landmarks[2], real_landmarks[8])
-        gen_distance = calculate_distances(gen_landmarks[2], gen_landmarks[8])
+        comparison_result = compare_proportions(real_proportions, gen_proportions)
+        print()
+        print(f"Comparison result: {comparison_result}")
 
-        print(f"Real distance: {real_distance}")
-        print(f"Gen distance: {gen_distance}")
+        max_key, max_value = max_absolute_proportion(comparison_result)
+        print(f"Max difference: {max_key} with value {max_value}")
         print("--------------------------------------------------------------------------------")
-
-        # comparison_result = compare_landmarks(real_landmarks, gen_landmarks)
 
 if __name__ == "__main__":
     real_data_path = "real-data"
