@@ -5,16 +5,20 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import numpy as np
 
+from file_operations import get_sorted_files
+
 def load_images(folder_path):
     try:
         if not os.path.isdir(folder_path):
             raise FileNotFoundError(f"The directory '{folder_path}' does not exist.")
         
         images = []
-        for filename in os.listdir(folder_path):
+        images_path = get_sorted_files(folder_path)
+        for filename in images_path:
             if filename.lower().endswith(('.jpg', '.png', '.jpeg')):
                 filepath = os.path.join(folder_path, filename)
                 images.append(mpimg.imread(filepath))
+
         return images
     except Exception as e:
         print(f"Error: {e}")
