@@ -3,14 +3,14 @@ def generate_latex_table_mediapipe(max_differences):
     latex_table += "\t\\centering\n"
     latex_table += "\t\\begin{tabular}{|c|c|c|}\n"
     latex_table += "\t\t\\hline\n"
-    latex_table += "\t\t" + "Název" + " & " + "Počet výskytů" + " & " + "Průměrná hodnota" + " \\\\\n"
+    latex_table += "\t\t" + "Měřená proporce" + " & " + "Počet výskytů" + " & " + "Průměrný rozdíl" + " \\\\\n"
     latex_table += "\t\t\\hline\n"
     for key, max_diff in max_differences.items():
         latex_table += "\t\t" + f"{translate_to_czech(key)} & {max_diff.count} & {max_diff.value / max_diff.count:.8f} \\\\\n"
     latex_table += "\t\t\\hline\n"
     latex_table += "\t\\end{tabular}\n"
-    latex_table += "\t\\caption{Summary of Max Differences}\n"
-    latex_table += "\t\\label{tab:max_differences}\n"
+    latex_table += "\t\\caption{Tabulka výsledků antropometrické analýzy.}\n"
+    latex_table += "\t\\label{tab:max-differences}\n"
     latex_table += "\\end{table}"
 
     return latex_table

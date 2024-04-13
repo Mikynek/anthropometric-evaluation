@@ -27,7 +27,7 @@ def plot_and_save(verification_results, distances, distance_threshold):
     plt.savefig("legacy/deepface_verification_results.png")
     plt.close()
 
-    plt.figure(figsize=(8, 6))
+    plt.figure(figsize=(15, 8))
     _plot_distance_scatter(distances, distance_threshold)
     plt.title('Face Distance for Each Pair')
     plt.xlabel('Pair Number')
@@ -37,13 +37,13 @@ def plot_and_save(verification_results, distances, distance_threshold):
     plt.close()
 
 def plot_inline(verification_results, distances, distance_threshold):
-    plt.figure(figsize=(10, 5))
+    plt.figure(figsize=(20, 8))
 
-    plt.subplot(1, 2, 1)
+    plt.subplot(1, 1, 1)
     _plot_pie_chart(verification_results)
     plt.title('Verification Results')
 
-    plt.subplot(1, 2, 2)
+    plt.subplot(1, 3, 2)
     _plot_distance_scatter(distances, distance_threshold)
     plt.title('Face Distance for Each Pair')
     plt.xlabel('Pair Number')

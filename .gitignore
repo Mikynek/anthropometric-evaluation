@@ -1,7 +1,7 @@
 .DS_Store
 legacy
 CelebA-HQ-img
-test-data
+test*
 real-data
 gen-data
 
