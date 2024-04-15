@@ -1,5 +1,8 @@
 from helpers.generate_latex_table import generate_latex_table_mediapipe
 
+def calculate_average(data):
+    return sum(data) / len(data)
+
 def print_analysis_statistics(max_differences):
     print("SUMMARY")
     print("Max differences:")
@@ -18,6 +21,29 @@ def print_analysis_statistics(max_differences):
 
     latex_table = generate_latex_table_mediapipe(max_differences)
     # print(latex_table)
+
+def print_tfi_statistics(real_facial_height, real_facial_width, real_tfi, gen_facial_height, gen_facial_width, gen_tfi):
+    MHF_real = calculate_average(real_facial_height)
+    MFB_real = calculate_average(real_facial_width)
+    TFI_real = calculate_average(real_tfi)
+
+    MHF_gen = calculate_average(gen_facial_height)
+    MFB_gen = calculate_average(gen_facial_width)
+    TFI_gen = calculate_average(gen_tfi)
+
+    MHF_combined = real_facial_height + gen_facial_height
+    MHF_avg_combined = calculate_average(MHF_combined)
+
+    MFB_combined = real_facial_width + gen_facial_width
+    MFB_avg_combined = calculate_average(MFB_combined)
+
+    TFI_combined = real_tfi + gen_tfi
+    TFI_avg_combined = calculate_average(TFI_combined)
+    print("TFI STATISTICS")
+    print("Parameters | Real | Generated | Combined")
+    print(f"MHF | {MHF_real:.5f} | {MHF_gen:.5f} | {MHF_avg_combined:.5f}")
+    print(f"MFB | {MFB_real:.5f} | {MFB_gen:.5f} | {MFB_avg_combined:.5f}")
+    print(f"TFI | {TFI_real:.5f} | {TFI_gen:.5f} | {TFI_avg_combined:.5f}")
     
 def print_verification_statistics_deepface(verification_results, distances):
     success_count = verification_results.count(True)

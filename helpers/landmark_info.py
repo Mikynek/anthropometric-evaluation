@@ -63,6 +63,11 @@ FACE_PROPORTIONS: List[LandmarkMeasurements] = [
     LandmarkMeasurements(STO_LI, LI,"lower_lip_height"),
 ]
 
+TFI: List[LandmarkMeasurements] = [
+    LandmarkMeasurements(N, GN, "morph_face_height"),
+    LandmarkMeasurements(ZY_L, ZY_R, "facial_width"),
+]
+
 @dataclass
 class MaxDifference:
     value: float
