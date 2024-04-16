@@ -1,4 +1,4 @@
-from helpers.generate_latex_table import generate_latex_table_mediapipe
+from helpers.generate_latex_table import generate_latex_table_mediapipe, create_latex_table_tfi
 
 def calculate_average(data):
     return sum(data) / len(data)
@@ -44,6 +44,9 @@ def print_tfi_statistics(real_facial_height, real_facial_width, real_tfi, gen_fa
     print(f"MHF | {MHF_real:.5f} | {MHF_gen:.5f} | {MHF_avg_combined:.5f}")
     print(f"MFB | {MFB_real:.5f} | {MFB_gen:.5f} | {MFB_avg_combined:.5f}")
     print(f"TFI | {TFI_real:.5f} | {TFI_gen:.5f} | {TFI_avg_combined:.5f}")
+
+    latex_table = create_latex_table_tfi(MHF_real, MHF_gen, MHF_avg_combined, MFB_real, MFB_gen, MFB_avg_combined, TFI_real, TFI_gen, TFI_avg_combined)
+    # print(latex_table)
     
 def print_verification_statistics_deepface(verification_results, distances):
     success_count = verification_results.count(True)
