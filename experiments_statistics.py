@@ -52,16 +52,23 @@ def print_verification_statistics_deepface(verification_results, distances):
     success_count = verification_results.count(True)
     failure_count = verification_results.count(False)
     total_pairs = len(verification_results)
-    average_distance = sum(distances) / len(distances)
+
+    if total_pairs == 0:
+        print("No pairs to verify.")
+        return
+
+    avg_distance = calculate_average(distances)
+
+    sorted_distances = sorted(distances)
+    median_index = len(sorted_distances) // 2
+    median_distance = sorted_distances[median_index]
 
     print("\nVerification Statistics:")
     print(f"Total Pairs: {total_pairs}")
     print(f"Successful Verifications: {success_count}")
     print(f"Failed Verifications: {failure_count}")
-    print(f"Average Distance: {average_distance:.6f}")
+    print(f"Average Distance: {avg_distance:.8f}")
+    print(f"Median Distance: {median_distance:.8f}")
 
-    if total_pairs > 0:
-        success_rate = (success_count / total_pairs) * 100
-        print(f"Success Rate: {success_rate:.2f}%")
-    else:
-        print("No pairs to verify.")
+    success_rate = (success_count / total_pairs) * 100
+    print(f"Success Rate: {success_rate:.2f}%")
