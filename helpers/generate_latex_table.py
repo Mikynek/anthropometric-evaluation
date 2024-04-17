@@ -4,7 +4,7 @@ def translate_to_czech(key):
         "jaw_width": "šířka čelisti (go-go)",
         "lower_face_height": "výška dolní části obličeje (sn-gn)",
         "face_height": "výška obličeje (tr-gn)",
-        "morph_face_height": "výška obličeje (n-gn)",
+        "morph_face_height": "morfologická výška obličeje (n-gn)",
         "upper_face_height": "výška horní části obličeje (n-sto)",
         "lower_third_face_height": "výška dolní třetiny obličeje (sto-gn)",
         "special_face_height_left": "speciální výška obličeje vlevo (en-gn)",
