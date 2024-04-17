@@ -1,23 +1,25 @@
 from helpers.generate_latex_table import generate_latex_table_mediapipe, create_latex_table_tfi
 
+dash = '-' * 45  # Length of the dashed line
+
 def calculate_average(data):
     return sum(data) / len(data)
 
 def print_analysis_statistics(max_differences):
-    print("SUMMARY")
-    print("Max differences:")
+    print("\n\t\tMediaPipe Summary".upper())
+    print(dash)
+    print("Max differences:".upper())
     for key, max_diff in max_differences.items():
         print(f"  {key}: {max_diff.count} occurrences, average distance difference: {max_diff.value / max_diff.count}")
 
     if max_differences:
         # Finding which proportion differs the most
         most_differing_proportion = max(max_differences, key=lambda k: max_differences[k].count)
-        print(f"The most differing proportion: {most_differing_proportion} with {max_differences[most_differing_proportion].count} occurrences.")
-        # Calculate the average distance difference for the most differing proportion
-        average_distance_difference = max_differences[most_differing_proportion].value / max_differences[most_differing_proportion].count
-        print(f"Average distance difference for the most differing proportion: {average_distance_difference}")
+        print(f"\nThe most differing proportion: {most_differing_proportion}")
+        print(f"  Occurrences: {max_differences[most_differing_proportion].count}")
+        print(f"  Average distance difference: {max_differences[most_differing_proportion].value / max_differences[most_differing_proportion].count}")
     else:
-        print("No differences found.")
+        print("\nNo differences found.")
 
     latex_table = generate_latex_table_mediapipe(max_differences)
     # print(latex_table)
@@ -39,12 +41,23 @@ def print_tfi_statistics(real_facial_height, real_facial_width, real_tfi, gen_fa
 
     TFI_combined = real_tfi + gen_tfi
     TFI_avg_combined = calculate_average(TFI_combined)
-    print("TFI STATISTICS")
-    print("Parameters | Real | Generated | Combined")
-    print(f"MHF | {MHF_real:.5f} | {MHF_gen:.5f} | {MHF_avg_combined:.5f}")
-    print(f"MFB | {MFB_real:.5f} | {MFB_gen:.5f} | {MFB_avg_combined:.5f}")
-    print(f"TFI | {TFI_real:.5f} | {TFI_gen:.5f} | {TFI_avg_combined:.5f}")
+    print("\n\t\tTFI STATISTICS")
+    data = [
+        ["Parameters", "Real", "Generated", "Combined"],
+        ["MFH", MHF_real, MHF_gen, MHF_avg_combined],
+        ["MFB", MFB_real, MFB_gen, MFB_avg_combined],
+        ["TFI", TFI_real, TFI_gen, TFI_avg_combined]
+    ]
 
+    for i in range(len(data)):
+        if i == 0:
+            print(dash)
+            print('{:<10s}{:>10s}{:>12s}{:>12s}'.format(data[i][0], data[i][1], data[i][2], data[i][3]))
+            print(dash)
+        else:
+            print('{:<10s}{:>10.5f}{:>12.5f}{:>12.5f}'.format(data[i][0], data[i][1], data[i][2], data[i][3]))
+
+    print(dash)
     latex_table = create_latex_table_tfi(MHF_real, MHF_gen, MHF_avg_combined, MFB_real, MFB_gen, MFB_avg_combined, TFI_real, TFI_gen, TFI_avg_combined)
     # print(latex_table)
     
