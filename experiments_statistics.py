@@ -41,7 +41,7 @@ def print_tfi_statistics(real_facial_height, real_facial_width, real_tfi, gen_fa
 
     TFI_combined = real_tfi + gen_tfi
     TFI_avg_combined = calculate_average(TFI_combined)
-    print("\n\t\tTFI STATISTICS")
+    print("\n\t\tTFI Statistics".upper())
     data = [
         ["Parameters", "Real", "Generated", "Combined"],
         ["MFH", MHF_real, MHF_gen, MHF_avg_combined],
@@ -66,8 +66,11 @@ def print_verification_statistics_deepface(verification_results, distances):
     failure_count = verification_results.count(False)
     total_pairs = len(verification_results)
 
+    print("\n\t\tDeepface Summary".upper())
+    print(dash)
+
     if total_pairs == 0:
-        print("No pairs to verify.")
+        print("  No pairs to verify.")
         return
 
     avg_distance = calculate_average(distances)
@@ -76,12 +79,11 @@ def print_verification_statistics_deepface(verification_results, distances):
     median_index = len(sorted_distances) // 2
     median_distance = sorted_distances[median_index]
 
-    print("\nVerification Statistics:")
-    print(f"Total Pairs: {total_pairs}")
-    print(f"Successful Verifications: {success_count}")
-    print(f"Failed Verifications: {failure_count}")
-    print(f"Average Distance: {avg_distance:.8f}")
-    print(f"Median Distance: {median_distance:.8f}")
+    print(f"  Total Pairs: {total_pairs}")
+    print(f"  Successful Verifications: {success_count}")
+    print(f"  Failed Verifications: {failure_count}")
+    print(f"  Average Distance: {avg_distance:.8f}")
+    print(f"  Median Distance: {median_distance:.8f}")
 
     success_rate = (success_count / total_pairs) * 100
-    print(f"Success Rate: {success_rate:.2f}%")
+    print(f"  Success Rate: {success_rate:.2f}%")

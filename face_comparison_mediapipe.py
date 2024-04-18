@@ -108,7 +108,6 @@ def compare_faces_mediapipe(real_data_path, gen_data_path):
             max_differences[max_key].value += max_value
         else:
             max_differences[max_key] = MaxDifference(value=max_value, count=1)
-        print(f"TFI: {gen_facial_index}")
 
     print_analysis_statistics(max_differences)
     print_tfi_statistics(real_facial_height, real_facial_width, real_tfi, gen_facial_height, gen_facial_width, gen_tfi)
