@@ -10,8 +10,8 @@ from helpers.landmark_info import FACE_PROPORTIONS, TFI, MaxDifference
 def calculate_distances(landmark1, landmark2):
     """Calculate the Euclidean distance between two 3D points."""
     return math.sqrt((landmark2.x - landmark1.x) ** 2 +
-                         (landmark2.y - landmark1.y) ** 2 +
-                         (landmark2.z - landmark1.z) ** 2)
+                     (landmark2.y - landmark1.y) ** 2 +
+                     (landmark2.z - landmark1.z) ** 2)
 
 def calculate_TFI(height, width):
     """Calculate TFI (Total Facial Index) based on distances."""

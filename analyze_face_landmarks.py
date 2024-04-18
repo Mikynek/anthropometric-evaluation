@@ -4,8 +4,8 @@ from face_comparison_mediapipe import compare_faces_mediapipe
 from experiments_statistics import print_verification_statistics_deepface
 
 parser = argparse.ArgumentParser(description="Compare faces using DeepFace and MediaPipe.")
-parser.add_argument('-r', '--real', required=True, help='Directory or zip file name for real images')
-parser.add_argument('-g', '--generated', required=True, help='Directory or zip file name for generated images')
+parser.add_argument('-r', '--real', required=True, help='Directory name for real images or image file path.')
+parser.add_argument('-g', '--generated', required=True, help='Directory name for generated images or image file path.')
 parser.add_argument("-l", "--locally", action="store_true", help="Save plots locally.")
 
 args = parser.parse_args()
