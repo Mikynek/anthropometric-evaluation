@@ -20,6 +20,49 @@ from mediapipe.tasks.python import vision
 from mediapipe import solutions
 from mediapipe.framework.formats import landmark_pb2
 
+LANDMARK_INDEXES = {
+    'G': 9,
+    'TR': 10,
+    'GN': 152,
+    'ZY_L': 127,
+    'ZY_R': 356,
+    'GO_L': 58,
+    'GO_R': 288,
+    'EX_L': 33,
+    'EN_L': 133,
+    'EX_R': 263,
+    'EN_R': 362,
+    'SN': 2,
+    'N': 8,
+    'AL_L': 49,
+    'AL_R': 279,
+    'CH_L': 61,
+    'CH_R': 308,
+    'LS': 0,
+    'STO_LS': 13,
+    'LI': 17,
+    'STO_LI': 14
+}
+
+def draw_landmark(landmark, label, image):
+    """Draws a single landmark and its label on the image."""
+    x, y = int(landmark.x * image.shape[1]), int(landmark.y * image.shape[0])
+    # Draw the point as a green circle
+    cv2.circle(image, (x, y), 2, (0, 255, 0), -1)
+    # Overlay the index label next to the point
+    cv2.putText(image, str(label), (x + 5, y), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 255, 255), 1, cv2.LINE_AA)
+
+def draw_specific_landmarks_on_image(rgb_image, detection_result):
+    face_landmarks_list = detection_result.face_landmarks
+    annotated_image = np.copy(rgb_image)
+    
+    for face_landmarks in face_landmarks_list:
+        for label, idx in LANDMARK_INDEXES.items():
+            if idx < len(face_landmarks):
+                draw_landmark(face_landmarks[idx], label, annotated_image)
+                
+    return annotated_image
+
 def draw_landmarks_on_image(rgb_image, detection_result):
   face_landmarks_list = detection_result.face_landmarks
   annotated_image = np.copy(rgb_image)
@@ -71,11 +114,15 @@ def get_image_with_landmarks(image_path):
 
     detection_result = detector.detect(image)
     annotated_image = draw_landmarks_on_image(img_rgb, detection_result)
+    annotated_image_points = draw_specific_landmarks_on_image(img_rgb, detection_result)
 
-    # Save the annotated image
-    output_path = image_path.replace(".jpg", "_landmarks.jpg")
+    output_path = image_path.replace(".jpg", "_landmarks.png")
     cv2.imwrite(output_path, cv2.cvtColor(annotated_image, cv2.COLOR_RGB2BGR))
     print(f"Annotated image saved at: {output_path}")
+
+    output_path = image_path.replace(".jpg", "_landmarks_specific.png")
+    cv2.imwrite(output_path, cv2.cvtColor(annotated_image_points, cv2.COLOR_RGB2BGR))
+    print(f"Annotated specific image saved at: {output_path}")
 
 def parse_arguments_landmarks():
   parser = argparse.ArgumentParser(description='Create image with landmarks.')
