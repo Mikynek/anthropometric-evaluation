@@ -57,6 +57,8 @@ def compare_faces_mediapipe(real_data_path, gen_data_path):
     real_data_files = get_sorted_files(real_data_path)
     gen_data_files = get_sorted_files(gen_data_path)
 
+    avg_diffs = []
+
     max_differences = {}
 
     real_facial_height = []
@@ -98,9 +100,10 @@ def compare_faces_mediapipe(real_data_path, gen_data_path):
         gen_facial_index = calculate_TFI(gen_facial_height[-1], gen_facial_width[-1])
         gen_tfi.append(gen_facial_index)
 
-        print(f"Comparison between {real_file} and {gen_file}")
-
         comparison_result = compare_proportions(real_proportions, gen_proportions)
+        avg_diff = sum(abs(value) for value in comparison_result.values()) / len(comparison_result)
+        avg_diffs.append(avg_diff)
+        print(f"Comparison between {real_file} and {gen_file} with average difference in proportions: {avg_diff}")
 
         max_key, max_value = max_absolute_proportion_difference(comparison_result)
 
@@ -111,6 +114,7 @@ def compare_faces_mediapipe(real_data_path, gen_data_path):
             max_differences[max_key] = MaxDifference(value=max_value, count=1)
 
     print_analysis_statistics(max_differences)
+    print("\nAverage difference across all proportions:", sum(avg_diffs) / len(avg_diffs))
     print_tfi_statistics(real_facial_height, real_facial_width, real_tfi, gen_facial_height, gen_facial_width, gen_tfi)
 
 if __name__ == "__main__":
