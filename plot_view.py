@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import numpy as np
 
 # Main function to plot the verification results
 def plot_verification_results(verification_results, distances, distance_threshold, save_locally=False):
@@ -36,6 +37,14 @@ def plot_and_save(verification_results, distances, distance_threshold):
     plt.savefig("legacy/deepface_face_distances.png")
     plt.close()
 
+    plt.figure(figsize=(10, 6))
+    _plot_distance_histogram(distances)
+    plt.xlabel('Distance')
+    plt.ylabel('Count')
+    plt.title(f'Histogram of Distances')
+    plt.savefig("legacy/deepface_distance_histogram.png")
+
+
 def plot_inline(verification_results, distances, distance_threshold):
     plt.figure(figsize=(20, 8))
 
@@ -53,7 +62,7 @@ def plot_inline(verification_results, distances, distance_threshold):
     plt.show()
 
 
-# Helper functions to plot the pie chart and scatter plot
+# Helper functions to plot the pie chart, scatter plot and histogram
 def _plot_pie_chart(verification_results):
     success_count = verification_results.count(True)
     failure_count = verification_results.count(False)
@@ -66,3 +75,23 @@ def _plot_distance_scatter(distances, distance_threshold):
     plt.scatter(range(1, len(distances)+1), distances, color='blue')
     plt.axhline(y=distance_threshold, color='r', linestyle='--', label=f'Threshold ({distance_threshold})')
     plt.legend()
+
+def _plot_distance_histogram(distances, interval=0.1):
+    min_distance = np.floor(min(distances) / interval) * interval
+    max_distance = max(distances)
+    bins = np.arange(min_distance, max_distance + interval, interval)
+
+    colormap = plt.cm.viridis(np.linspace(0, 1, len(bins) - 1))
+    n, bins, patches = plt.hist(distances, bins=bins, edgecolor='black')
+
+    # Assign different colors to each bin
+    for color, patch in zip(colormap, patches):
+        patch.set_facecolor(color)
+    
+    # Calculate percentages for each bin
+    percentages = (n / len(distances)) * 100
+    
+    # Add percentage labels to each bar
+    for i, percentage in enumerate(percentages):
+        midpoint = (bins[i] + bins[i + 1]) / 2
+        plt.text(midpoint, n[i], f'{percentage:.2f}%', ha='center', va='bottom')
