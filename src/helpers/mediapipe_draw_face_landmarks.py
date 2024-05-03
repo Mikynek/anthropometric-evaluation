@@ -47,10 +47,8 @@ LANDMARK_INDEXES = {
 def draw_landmark(landmark, label, image):
     """Draws a single landmark and its label on the image."""
     x, y = int(landmark.x * image.shape[1]), int(landmark.y * image.shape[0])
-    # Draw the point as a green circle
     cv2.circle(image, (x, y), 2, (0, 255, 0), -1)
-    # Overlay the index label next to the point
-    cv2.putText(image, str(label), (x + 5, y), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 255, 255), 1, cv2.LINE_AA)
+    cv2.putText(image, str(label), (x + 5, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 1, cv2.LINE_AA)
 
 def draw_specific_landmarks_on_image(rgb_image, detection_result):
     face_landmarks_list = detection_result.face_landmarks
@@ -102,7 +100,7 @@ def draw_landmarks_on_image(rgb_image, detection_result):
   return annotated_image
 
 def get_image_with_landmarks(image_path):
-    base_options = python.BaseOptions(model_asset_path='helpers/face_landmarker_v2_with_blendshapes.task')
+    base_options = python.BaseOptions(model_asset_path='src/helpers/face_landmarker_v2_with_blendshapes.task')
     options = vision.FaceLandmarkerOptions(base_options=base_options,
                                             output_face_blendshapes=True,
                                             output_facial_transformation_matrixes=True,

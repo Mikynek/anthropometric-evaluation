@@ -47,7 +47,7 @@ def measure_face_proportions(landmarks, proportions=FACE_PROPORTIONS):
 
 def compare_faces_mediapipe(real_data_path, gen_data_path):
     print("\nComparing faces using MediaPipe...")
-    base_options = python.BaseOptions(model_asset_path='helpers/face_landmarker_v2_with_blendshapes.task')
+    base_options = python.BaseOptions(model_asset_path='src/helpers/face_landmarker_v2_with_blendshapes.task')
     options = vision.FaceLandmarkerOptions(base_options=base_options,
                                             output_face_blendshapes=True,
                                             output_facial_transformation_matrixes=True,

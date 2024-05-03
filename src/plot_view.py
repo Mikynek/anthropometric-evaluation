@@ -30,9 +30,9 @@ def plot_and_save(verification_results, distances, distance_threshold):
 
     plt.figure(figsize=(15, 8))
     _plot_distance_scatter(distances, distance_threshold)
-    plt.title('Face Distance for Each Pair')
-    plt.xlabel('Pair Number')
-    plt.ylabel('Face Distance')
+    plt.title('Cosine Distance for Each Pair', fontsize=18)
+    plt.xlabel('Pair Index', fontsize=16)
+    plt.ylabel('Cosine Distance', fontsize=16)
     plt.tight_layout()
     plt.savefig("legacy/deepface_face_distances.png")
     plt.close()
@@ -55,8 +55,8 @@ def plot_inline(verification_results, distances, distance_threshold):
     plt.subplot(1, 3, 2)
     _plot_distance_scatter(distances, distance_threshold)
     plt.title('Face Distance for Each Pair')
-    plt.xlabel('Pair Number')
-    plt.ylabel('Face Distance')
+    plt.xlabel('Pair Index', fontsize=18)
+    plt.ylabel('Cosine Distance', fontsize=18)
 
     plt.tight_layout()
     plt.show()
@@ -74,7 +74,7 @@ def _plot_pie_chart(verification_results):
 def _plot_distance_scatter(distances, distance_threshold):
     plt.scatter(range(1, len(distances)+1), distances, color='blue')
     plt.axhline(y=distance_threshold, color='r', linestyle='--', label=f'Threshold ({distance_threshold})')
-    plt.legend()
+    plt.legend(fontsize=12)
 
 def _plot_distance_histogram(distances, interval=0.1):
     min_distance = np.floor(min(distances) / interval) * interval
