@@ -13,13 +13,19 @@ To execute the program, enter the following command in your terminal:
 python3 src/analyze_face_landmarks.py -r REAL-DATA -g GENERATED-DATA [-p] [-l]
 ```
 
-For more information about program options run:
+- `REAL-DATA` and `GENERATED-DATA` can be single images or directories containing images.
+
+### Additional Options
+
+For more information about program options, run:
 
 ```
 python3 src/analyze_face_landmarks.py -h
 ```
 
-To run program properly install needed dependencies from requirements.txt using:
+## Installation
+
+To run the program, first install the required dependencies from requirements.txt:
 
 ```
 cd src
